@@ -23,11 +23,11 @@ jobs:
       with:
         php-version: ${{ matrix.php }}
 
-    - name: Validate composer.json
-      run: composer validate --strict
-
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-interaction
+
+    - name: Install PHP extensions finder
+      run: composer require efabrica/php-extensions-finder --dev
 
     - name: PHP extensions finder
       run: vendor/bin/php-extensions-finder check src
