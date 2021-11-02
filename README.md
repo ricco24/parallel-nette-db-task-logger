@@ -1,1 +1,1 @@
-# parallel-nette-db-task-logger
+# Nette DB task logger for Parallel library 

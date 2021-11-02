@@ -10,6 +10,7 @@ use Parallel\Logging\TaskLogger\TaskLoggerFactory;
 
 class DbTaskLoggerFactory implements TaskLoggerFactory
 {
+    /** @var Explorer */
     private $logDb;
 
     public function __construct(Explorer $logDb)
