@@ -16,7 +16,7 @@ class DbTaskLogger implements TaskLogger
     /** @var string */
     private $taskName;
 
-    /** @var array<string, mixed> */
+    /** @var array<int, array<string, mixed>> */
     private $records = [];
 
     public function __construct(Explorer $logDb, string $taskName)
@@ -66,7 +66,12 @@ class DbTaskLogger implements TaskLogger
 
     public function processGlobal(): void
     {
-        $this->logDb->table('parallel_stats')->fetch()->update(['end_at' => new DateTime()]);
+        $statsRow = $this->logDb->table('parallel_stats')->fetch();
+        if (!$statsRow) {
+            return;
+        }
+
+        $statsRow->update(['end_at' => new DateTime()]);
     }
 
     /**
@@ -117,6 +122,11 @@ class DbTaskLogger implements TaskLogger
         $this->records = [];
     }
 
+    /**
+     * @param string $type
+     * @param string $message
+     * @param array<string, mixed> $info
+     */
     public function addLog(string $type, string $message, array $info = []): void
     {
         $recordId = null;
