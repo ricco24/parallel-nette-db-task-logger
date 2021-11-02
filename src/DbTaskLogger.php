@@ -10,10 +10,13 @@ use Parallel\Logging\TaskLogger\TaskLogger;
 
 class DbTaskLogger implements TaskLogger
 {
+    /** @var Explorer */
     private $logDb;
 
+    /** @var string */
     private $taskName;
 
+    /** @var array */
     private $records = [];
 
     public function __construct(Explorer $logDb, string $taskName)
