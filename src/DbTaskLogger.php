@@ -16,7 +16,7 @@ class DbTaskLogger implements TaskLogger
     /** @var string */
     private $taskName;
 
-    /** @var array */
+    /** @var array<string, mixed> */
     private $records = [];
 
     public function __construct(Explorer $logDb, string $taskName)
@@ -25,6 +25,10 @@ class DbTaskLogger implements TaskLogger
         $this->taskName = $taskName;
     }
 
+    /**
+     * @param int $allTasksCount
+     * @param array<int, string> $inputSubnets
+     */
     public function prepareGlobal(int $allTasksCount, array $inputSubnets): void
     {
         $this->logDb->query('DROP TABLE IF EXISTS `parallel_tasks`');
@@ -65,6 +69,14 @@ class DbTaskLogger implements TaskLogger
         $this->logDb->table('parallel_stats')->fetch()->update(['end_at' => new DateTime()]);
     }
 
+    /**
+     * @param string $name
+     * @param DateTime $startAt
+     * @param DateTime $endAt
+     * @param int $memoryPeak
+     * @param array<string, array<string, string>> $runWithTasks
+     * @param array<mixed, string> $extra
+     */
     public function processDoneTaskData(string $name, DateTime $startAt, DateTime $endAt, int $memoryPeak, array $runWithTasks, array $extra): void
     {
         $this->logDb->table('parallel_tasks')->insert([
