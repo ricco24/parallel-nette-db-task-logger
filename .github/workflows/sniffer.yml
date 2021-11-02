@@ -23,11 +23,11 @@ jobs:
       with:
         php-version: ${{ matrix.php }}
 
-    - name: Validate composer.json
-      run: composer validate --strict
-
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-interaction
 
-    - name: Check syntax
-      run: find src -name "*.php" -print0 | xargs -0 -n1 -P8 php -l
+    - name: Install PHP code sniffer
+      run: composer require squizlabs/php_codesniffer --dev
+
+    - name: Code sniffer
+      run: vendor/bin/phpcs src --standard=PSR2 -n

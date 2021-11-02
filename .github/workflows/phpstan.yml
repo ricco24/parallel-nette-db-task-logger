@@ -23,9 +23,6 @@ jobs:
       with:
         php-version: ${{ matrix.php }}
 
-    - name: Validate composer.json
-      run: composer validate --strict
-
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-interaction
 
